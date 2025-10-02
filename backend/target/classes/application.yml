@@ -1,0 +1,30 @@
+spring:
+  cache:
+    type: caffeine
+    cache-names: tennis_data
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=300s
+
+# Tennis API Configuration
+tennis:
+  api:
+    key: 9d7adf3c5dmshb123fb0410b9a08b109e68jsn1505627d6256
+    host: tennisapi1.p.rapidapi.com
+    base-url: https://tennisapi1.p.rapidapi.com
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# JWT Configuration
+jwt:
+  secret: your-256-bit-secret-key-here
+  expiration: 86400000 # 24 hours in milliseconds
