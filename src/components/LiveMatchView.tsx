@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Radio } from 'lucide-react';
 import { Match } from '../types/tennis';
+import '../styles/components.css';
 
 interface LiveMatchViewProps {
   match: Match;
@@ -15,27 +16,32 @@ export const LiveMatchView = ({ match }: LiveMatchViewProps) => {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 shadow-2xl">
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10"></div>
+    <div className="tennis-card relative overflow-hidden rounded-3xl p-8 shadow-2xl theme-transition">
+      <div className="absolute inset-0 tennis-gradient opacity-10"></div>
 
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-8">
           <motion.div
-            className="flex items-center gap-3 bg-red-500/20 backdrop-blur-sm px-5 py-2 rounded-full border border-red-500/30"
+            className="flex items-center gap-3 px-5 py-2 rounded-full backdrop-blur-sm theme-transition"
+            style={{ 
+              backgroundColor: 'rgb(var(--color-error) / 0.2)',
+              borderColor: 'rgb(var(--color-error) / 0.3)',
+              border: '1px solid'
+            }}
             animate={{ opacity: [1, 0.7, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Radio className="w-5 h-5 text-red-400" />
-            <span className="text-red-400 font-bold text-sm uppercase tracking-wider">Live</span>
+            <Radio className="w-5 h-5" style={{ color: 'rgb(var(--color-error))' }} />
+            <span className="font-bold text-sm uppercase tracking-wider" style={{ color: 'rgb(var(--color-error))' }}>Live</span>
           </motion.div>
 
-          <div className="flex items-center gap-2 text-slate-300">
+          <div className="flex items-center gap-2 tennis-text-secondary">
             <Clock className="w-5 h-5" />
             <span className="text-xl font-mono font-semibold">{formatTime(match.matchTime)}</span>
           </div>
 
-          <div className="px-5 py-2 rounded-full bg-slate-700/50 backdrop-blur-sm border border-slate-600/50">
-            <span className="text-slate-300 text-sm font-semibold uppercase">{match.surface} Court</span>
+          <div className="px-5 py-2 rounded-full tennis-bg-secondary backdrop-blur-sm tennis-border">
+            <span className="tennis-text-secondary text-sm font-semibold uppercase">{match.surface} Court</span>
           </div>
         </div>
 
@@ -46,11 +52,19 @@ export const LiveMatchView = ({ match }: LiveMatchViewProps) => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              className={`relative p-6 rounded-2xl backdrop-blur-md transition-all duration-300 ${
-                match.currentServer === match.player1.id
-                  ? 'bg-emerald-500/20 border-2 border-emerald-400/50 shadow-lg shadow-emerald-500/20'
-                  : 'bg-slate-800/50 border border-slate-700/50'
-              }`}
+              className="relative p-6 rounded-2xl backdrop-blur-md theme-transition"
+              style={{
+                backgroundColor: match.currentServer === match.player1.id 
+                  ? `rgb(var(--color-accent-primary) / 0.2)`
+                  : `rgb(var(--color-bg-secondary) / 0.5)`,
+                borderWidth: match.currentServer === match.player1.id ? '2px' : '1px',
+                borderColor: match.currentServer === match.player1.id 
+                  ? `rgb(var(--color-accent-primary) / 0.5)`
+                  : `rgb(var(--color-border))`,
+                boxShadow: match.currentServer === match.player1.id 
+                  ? `0 10px 15px -3px rgb(var(--color-accent-primary) / 0.2)`
+                  : 'none'
+              }}
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="relative">

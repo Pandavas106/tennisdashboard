@@ -9,7 +9,7 @@ export const FanEngagement = () => {
   const [votedPolls, setVotedPolls] = useState<Set<string>>(new Set());
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleVote = (pollId: string, optionIndex: number) => {
+  const handleVote = (pollId: string) => {
     if (!votedPolls.has(pollId)) {
       setVotedPolls(new Set(votedPolls).add(pollId));
       setShowConfetti(true);
@@ -52,14 +52,14 @@ export const FanEngagement = () => {
         )}
       </AnimatePresence>
 
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-xl">
+      <div className="p-6 rounded-2xl bg-card-bg border border-color-border shadow-xl">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/20">
-            <BarChart3 className="w-6 h-6 text-emerald-400" />
+          <div className="p-3 rounded-xl bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20">
+            <BarChart3 className="w-6 h-6 text-accent-primary" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">Live Predictions</h3>
-            <p className="text-sm text-slate-400">Vote and see what others think</p>
+            <h3 className="text-xl font-bold text-text-primary">Live Predictions</h3>
+            <p className="text-sm text-text-secondary">Vote and see what others think</p>
           </div>
         </div>
 
@@ -71,16 +71,16 @@ export const FanEngagement = () => {
                 key={poll.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-5 rounded-xl bg-slate-800/50 backdrop-blur-sm border border-slate-700/50"
+                className="p-5 rounded-xl bg-bg-secondary/50 backdrop-blur-sm border border-color-border"
               >
-                <h4 className="text-lg font-semibold text-white mb-4">{poll.question}</h4>
+                <h4 className="text-lg font-semibold text-text-primary mb-4">{poll.question}</h4>
                 <div className="space-y-3">
                   {poll.options.map((option, index) => {
                     const percentage = poll.totalVotes > 0 ? (poll.votes[index] / poll.totalVotes) * 100 : 0;
                     return (
                       <motion.button
                         key={index}
-                        onClick={() => handleVote(poll.id, index)}
+                        onClick={() => handleVote(poll.id)}
                         disabled={hasVoted}
                         whileHover={!hasVoted ? { scale: 1.02 } : {}}
                         whileTap={!hasVoted ? { scale: 0.98 } : {}}
@@ -99,14 +99,14 @@ export const FanEngagement = () => {
                         <div className="relative z-10 flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             {hasVoted && (
-                              <CheckCircle className="w-5 h-5 text-emerald-400" />
+                              <CheckCircle className="w-5 h-5 text-accent-secondary" />
                             )}
-                            <span className="font-semibold text-white">{option}</span>
+                            <span className="font-semibold text-text-primary">{option}</span>
                           </div>
                           {hasVoted && (
                             <div className="flex items-center gap-3">
-                              <span className="text-slate-300">{poll.votes[index].toLocaleString()} votes</span>
-                              <span className="text-lg font-bold text-emerald-400">{percentage.toFixed(1)}%</span>
+                              <span className="text-text-secondary">{poll.votes[index].toLocaleString()} votes</span>
+                              <span className="text-lg font-bold text-accent-primary">{percentage.toFixed(1)}%</span>
                             </div>
                           )}
                         </div>
@@ -130,14 +130,14 @@ export const FanEngagement = () => {
         </div>
       </div>
 
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-xl">
+      <div className="p-6 rounded-2xl bg-card-bg border border-color-border shadow-xl">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-500/20 to-yellow-600/20">
-            <Trophy className="w-6 h-6 text-yellow-400" />
+          <div className="p-3 rounded-xl bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20">
+            <Trophy className="w-6 h-6 text-accent-primary" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">Global Leaderboard</h3>
-            <p className="text-sm text-slate-400">Top prediction experts worldwide</p>
+            <h3 className="text-xl font-bold text-text-primary">Global Leaderboard</h3>
+            <p className="text-sm text-text-secondary">Top prediction experts worldwide</p>
           </div>
         </div>
 
@@ -156,28 +156,28 @@ export const FanEngagement = () => {
                   ? 'bg-gradient-to-r from-slate-400/20 to-slate-500/20 border-slate-400/50'
                   : entry.rank === 3
                   ? 'bg-gradient-to-r from-orange-500/20 to-orange-600/20 border-orange-500/50'
-                  : 'bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50'
+                  : 'bg-bg-secondary/50 border-color-border hover:border-accent-primary/50'
               }`}
             >
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl ${
                   entry.rank === 1
-                    ? 'bg-gradient-to-br from-yellow-500 to-yellow-600 text-white shadow-lg'
+                    ? 'bg-gradient-to-br from-accent-primary to-accent-secondary text-text-primary shadow-lg'
                     : entry.rank === 2
-                    ? 'bg-gradient-to-br from-slate-400 to-slate-500 text-white'
+                    ? 'bg-gradient-to-br from-bg-secondary to-text-secondary text-text-primary'
                     : entry.rank === 3
-                    ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white'
-                    : 'bg-slate-700 text-slate-300'
+                    ? 'bg-gradient-to-br from-warning to-error text-text-primary'
+                    : 'bg-bg-secondary text-text-secondary'
                 }`}>
                   {entry.rank}
                 </div>
 
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="text-lg font-bold text-white">{entry.username}</h4>
+                    <h4 className="text-lg font-bold text-text-primary">{entry.username}</h4>
                     <span className="text-xl">{entry.country}</span>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-slate-400">
+                  <div className="flex items-center gap-4 text-sm text-text-secondary">
                     <span className="flex items-center gap-1">
                       <CheckCircle className="w-4 h-4" />
                       {entry.correctPredictions} correct
@@ -187,10 +187,10 @@ export const FanEngagement = () => {
 
                 <div className="text-right">
                   <div className="flex items-center gap-2 justify-end mb-1">
-                    <TrendingUp className="w-5 h-5 text-emerald-400" />
-                    <p className="text-2xl font-bold text-white">{entry.points.toLocaleString()}</p>
+                    <TrendingUp className="w-5 h-5 text-accent-secondary" />
+                    <p className="text-2xl font-bold text-text-primary">{entry.points.toLocaleString()}</p>
                   </div>
-                  <p className="text-xs text-slate-400 uppercase tracking-wider">Points</p>
+                  <p className="text-xs text-text-secondary uppercase tracking-wider">Points</p>
                 </div>
               </div>
             </motion.div>
@@ -201,10 +201,10 @@ export const FanEngagement = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="mt-6 p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-slate-700/50"
+          className="mt-6 p-4 rounded-xl bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 border border-color-border"
         >
-          <p className="text-center text-slate-300">
-            <span className="font-semibold text-white">Make predictions</span> to earn points and climb the leaderboard!
+          <p className="text-center text-text-secondary">
+            <span className="font-semibold text-text-primary">Make predictions</span> to earn points and climb the leaderboard!
           </p>
         </motion.div>
       </div>

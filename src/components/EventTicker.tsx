@@ -25,15 +25,35 @@ export const EventTicker = ({ events }: EventTickerProps) => {
   const getEventColor = (type: string) => {
     switch (type) {
       case 'ace':
-        return 'from-emerald-500/30 to-emerald-600/30 border-emerald-500/50 text-emerald-400';
+        return {
+          background: `linear-gradient(to right, rgb(var(--color-success) / 0.2), rgb(var(--color-success) / 0.1))`,
+          borderColor: `rgb(var(--color-success) / 0.3)`,
+          color: `rgb(var(--color-success))`
+        };
       case 'winner':
-        return 'from-blue-500/30 to-blue-600/30 border-blue-500/50 text-blue-400';
+        return {
+          background: `linear-gradient(to right, rgb(var(--color-accent-primary) / 0.2), rgb(var(--color-accent-primary) / 0.1))`,
+          borderColor: `rgb(var(--color-accent-primary) / 0.3)`,
+          color: `rgb(var(--color-accent-primary))`
+        };
       case 'double_fault':
-        return 'from-red-500/30 to-red-600/30 border-red-500/50 text-red-400';
+        return {
+          background: `linear-gradient(to right, rgb(var(--color-error) / 0.2), rgb(var(--color-error) / 0.1))`,
+          borderColor: `rgb(var(--color-error) / 0.3)`,
+          color: `rgb(var(--color-error))`
+        };
       case 'break_point':
-        return 'from-yellow-500/30 to-yellow-600/30 border-yellow-500/50 text-yellow-400';
+        return {
+          background: `linear-gradient(to right, rgb(var(--color-warning) / 0.2), rgb(var(--color-warning) / 0.1))`,
+          borderColor: `rgb(var(--color-warning) / 0.3)`,
+          color: `rgb(var(--color-warning))`
+        };
       default:
-        return 'from-slate-500/30 to-slate-600/30 border-slate-500/50 text-slate-400';
+        return {
+          background: `linear-gradient(to right, rgb(var(--color-text-secondary) / 0.2), rgb(var(--color-text-secondary) / 0.1))`,
+          borderColor: `rgb(var(--color-text-secondary) / 0.3)`,
+          color: `rgb(var(--color-text-secondary))`
+        };
     }
   };
 
@@ -46,28 +66,28 @@ export const EventTicker = ({ events }: EventTickerProps) => {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-xl">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-700/10 to-transparent animate-pulse"></div>
+    <div className="relative overflow-hidden rounded-2xl bg-card-bg border border-color-border shadow-xl">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-color-bg-secondary/10 to-transparent animate-pulse"></div>
 
       <div className="relative z-10 p-4">
         <div className="flex items-center gap-3 mb-4">
           <motion.div
-            className="p-2 rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-600/20"
+            className="p-2 rounded-lg bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20"
             animate={{ rotate: [0, 360] }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
           >
-            <Zap className="w-5 h-5 text-emerald-400" />
+            <Zap className="w-5 h-5 text-accent-primary" />
           </motion.div>
           <div>
-            <h3 className="text-lg font-bold text-white">Live Event Feed</h3>
-            <p className="text-xs text-slate-400">Real-time match updates</p>
+            <h3 className="text-lg font-bold text-text-primary">Live Event Feed</h3>
+            <p className="text-xs text-text-secondary">Real-time match updates</p>
           </div>
         </div>
 
         <div className="space-y-2 max-h-96 overflow-y-auto custom-scrollbar">
           {events.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-slate-400">Waiting for match events...</p>
+              <p className="text-text-secondary">Waiting for match events...</p>
             </div>
           ) : (
             events.map((event, index) => (
@@ -81,7 +101,7 @@ export const EventTicker = ({ events }: EventTickerProps) => {
                   damping: 25,
                   delay: index * 0.05
                 }}
-                className={`p-4 rounded-xl bg-gradient-to-r backdrop-blur-sm border ${getEventColor(event.type)} transition-all hover:scale-[1.02]`}
+                className={`p-4 rounded-xl bg-gradient-to-r from-bg-secondary/20 to-bg-secondary/10 backdrop-blur-sm border ${getEventColor(event.type)} transition-all hover:scale-[1.02]`}
               >
                 <div className="flex items-start gap-3">
                   <motion.div
@@ -94,10 +114,10 @@ export const EventTicker = ({ events }: EventTickerProps) => {
 
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-white text-sm">{event.player}</span>
-                      <span className="text-xs text-slate-400 font-mono">{formatTime(event.timestamp)}</span>
+                      <span className="font-bold text-text-primary text-sm">{event.player}</span>
+                      <span className="text-xs text-text-secondary font-mono">{formatTime(event.timestamp)}</span>
                     </div>
-                    <p className="text-sm text-slate-200">{event.description}</p>
+                    <p className="text-sm text-text-secondary">{event.description}</p>
                     <div className="mt-2 inline-block">
                       <span className={`text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded ${getEventColor(event.type)} bg-opacity-50`}>
                         {event.type.replace('_', ' ')}
@@ -111,7 +131,7 @@ export const EventTicker = ({ events }: EventTickerProps) => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-bg-primary to-transparent pointer-events-none"></div>
     </div>
   );
 };

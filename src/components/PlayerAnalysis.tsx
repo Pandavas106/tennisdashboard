@@ -27,59 +27,73 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
     { name: 'Miss', value: 100 - stats2.firstServePercentage }
   ];
 
-  const COLORS = ['#10b981', '#ef4444'];
-
-  const StatCard = ({ icon: Icon, label, value, color }: any) => (
+  const StatCard = ({ icon: Icon, label, value, statType }: { 
+    icon: any, 
+    label: string, 
+    value: number, 
+    statType: 'success' | 'primary' | 'warning' | 'error' 
+  }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.05 }}
-      className={`p-4 rounded-xl bg-gradient-to-br ${color} backdrop-blur-sm border border-slate-700/50 shadow-lg`}
+      className="p-4 rounded-xl backdrop-blur-sm shadow-lg theme-transition"
+      style={{
+        background: `linear-gradient(135deg, rgb(var(--color-${statType}) / 0.1), rgb(var(--color-${statType}) / 0.05))`,
+        borderColor: `rgb(var(--color-${statType}) / 0.2)`,
+        border: '1px solid'
+      }}
     >
       <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 rounded-lg bg-slate-800/50">
-          <Icon className="w-5 h-5 text-white" />
+        <div className="p-2 rounded-lg theme-transition" 
+             style={{ backgroundColor: `rgb(var(--color-bg-secondary) / 0.5)` }}>
+          <Icon className="w-5 h-5" style={{ color: `rgb(var(--color-${statType}))` }} />
         </div>
-        <span className="text-sm font-medium text-slate-300">{label}</span>
+        <span className="text-sm font-medium tennis-text-secondary">{label}</span>
       </div>
-      <p className="text-3xl font-bold text-white">{value}</p>
+      <p className="text-3xl font-bold" style={{ color: `rgb(var(--color-${statType}))` }}>{value}</p>
     </motion.div>
   );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="space-y-6">
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-xl">
+        <div className="tennis-card p-6 rounded-2xl shadow-xl theme-transition">
           <div className="flex items-center gap-3 mb-6">
             <img
               src={player1.photo}
               alt={player1.name}
-              className="w-16 h-16 rounded-full object-cover border-2 border-emerald-500"
+              className="w-16 h-16 rounded-full object-cover border-2 theme-transition"
+              style={{ borderColor: `rgb(var(--color-accent-primary))` }}
             />
             <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <h3 className="text-xl font-bold tennis-text-primary flex items-center gap-2">
                 {player1.name} {player1.countryFlag}
               </h3>
-              <p className="text-sm text-slate-400">Real-Time Statistics</p>
+              <p className="text-sm tennis-text-secondary">Real-Time Statistics</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <StatCard icon={Zap} label="Aces" value={stats1.aces} color="from-emerald-500/20 to-emerald-600/20" />
-            <StatCard icon={Target} label="Winners" value={stats1.winners} color="from-blue-500/20 to-blue-600/20" />
-            <StatCard icon={Activity} label="Double Faults" value={stats1.doubleFaults} color="from-orange-500/20 to-orange-600/20" />
-            <StatCard icon={TrendingUp} label="Unforced Errors" value={stats1.unforcedErrors} color="from-red-500/20 to-red-600/20" />
+            <StatCard icon={Zap} label="Aces" value={stats1.aces} statType="success" />
+            <StatCard icon={Target} label="Winners" value={stats1.winners} statType="primary" />
+            <StatCard icon={Activity} label="Double Faults" value={stats1.doubleFaults} statType="warning" />
+            <StatCard icon={TrendingUp} label="Unforced Errors" value={stats1.unforcedErrors} statType="error" />
           </div>
 
           <div className="space-y-4">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-slate-300">First Serve %</span>
-                <span className="text-lg font-bold text-emerald-400">{stats1.firstServePercentage}%</span>
+                <span className="text-sm font-medium tennis-text-secondary">First Serve %</span>
+                <span className="text-lg font-bold" style={{ color: `rgb(var(--color-success))` }}>
+                  {stats1.firstServePercentage}%
+                </span>
               </div>
-              <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+              <div className="h-3 rounded-full overflow-hidden theme-transition" 
+                   style={{ backgroundColor: `rgb(var(--color-bg-secondary))` }}>
                 <motion.div
-                  className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+                  className="h-full"
+                  style={{ background: 'var(--gradient-primary)' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${stats1.firstServePercentage}%` }}
                   transition={{ duration: 1, delay: 0.2 }}
@@ -89,14 +103,16 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-slate-300">Break Points Won</span>
-                <span className="text-lg font-bold text-blue-400">
+                <span className="text-sm font-medium tennis-text-secondary">Break Points Won</span>
+                <span className="text-lg font-bold" style={{ color: `rgb(var(--color-accent-primary))` }}>
                   {stats1.breakPointsWon}/{stats1.breakPointsWon + stats1.breakPointsMissed}
                 </span>
               </div>
-              <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+              <div className="h-3 rounded-full overflow-hidden theme-transition"
+                   style={{ backgroundColor: `rgb(var(--color-bg-secondary))` }}>
                 <motion.div
-                  className="h-full bg-gradient-to-r from-blue-500 to-blue-400"
+                  className="h-full"
+                  style={{ background: 'var(--gradient-primary)' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${(stats1.breakPointsWon / (stats1.breakPointsWon + stats1.breakPointsMissed)) * 100}%` }}
                   transition={{ duration: 1, delay: 0.4 }}
@@ -105,7 +121,7 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
             </div>
 
             <div className="pt-4">
-              <h4 className="text-sm font-semibold text-slate-400 mb-3">First Serve Accuracy</h4>
+              <h4 className="text-sm font-semibold tennis-text-secondary mb-3">First Serve Accuracy</h4>
               <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie
@@ -117,11 +133,18 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {serve1Data.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                    {serve1Data.map((_, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={index === 0 ? `rgb(var(--color-success))` : `rgb(var(--color-error))`} 
+                      />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={{ 
+                    backgroundColor: `rgb(var(--color-bg-secondary))`,
+                    borderColor: `rgb(var(--color-border))`,
+                    color: `rgb(var(--color-text-primary))`
+                  }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -130,37 +153,42 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
       </div>
 
       <div className="space-y-6">
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-xl">
+        <div className="tennis-card p-6 rounded-2xl shadow-xl theme-transition">
           <div className="flex items-center gap-3 mb-6">
             <img
               src={player2.photo}
               alt={player2.name}
-              className="w-16 h-16 rounded-full object-cover border-2 border-blue-500"
+              className="w-16 h-16 rounded-full object-cover border-2 theme-transition"
+              style={{ borderColor: `rgb(var(--color-accent-secondary))` }}
             />
             <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <h3 className="text-xl font-bold tennis-text-primary flex items-center gap-2">
                 {player2.name} {player2.countryFlag}
               </h3>
-              <p className="text-sm text-slate-400">Real-Time Statistics</p>
+              <p className="text-sm tennis-text-secondary">Real-Time Statistics</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <StatCard icon={Zap} label="Aces" value={stats2.aces} color="from-emerald-500/20 to-emerald-600/20" />
-            <StatCard icon={Target} label="Winners" value={stats2.winners} color="from-blue-500/20 to-blue-600/20" />
-            <StatCard icon={Activity} label="Double Faults" value={stats2.doubleFaults} color="from-orange-500/20 to-orange-600/20" />
-            <StatCard icon={TrendingUp} label="Unforced Errors" value={stats2.unforcedErrors} color="from-red-500/20 to-red-600/20" />
+            <StatCard icon={Zap} label="Aces" value={stats2.aces} statType="success" />
+            <StatCard icon={Target} label="Winners" value={stats2.winners} statType="primary" />
+            <StatCard icon={Activity} label="Double Faults" value={stats2.doubleFaults} statType="warning" />
+            <StatCard icon={TrendingUp} label="Unforced Errors" value={stats2.unforcedErrors} statType="error" />
           </div>
 
           <div className="space-y-4">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-slate-300">First Serve %</span>
-                <span className="text-lg font-bold text-emerald-400">{stats2.firstServePercentage}%</span>
+                <span className="text-sm font-medium tennis-text-secondary">First Serve %</span>
+                <span className="text-lg font-bold" style={{ color: `rgb(var(--color-success))` }}>
+                  {stats2.firstServePercentage}%
+                </span>
               </div>
-              <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+              <div className="h-3 rounded-full overflow-hidden theme-transition"
+                   style={{ backgroundColor: `rgb(var(--color-bg-secondary))` }}>
                 <motion.div
-                  className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+                  className="h-full"
+                  style={{ background: 'var(--gradient-primary)' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${stats2.firstServePercentage}%` }}
                   transition={{ duration: 1, delay: 0.2 }}
@@ -170,14 +198,16 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-slate-300">Break Points Won</span>
-                <span className="text-lg font-bold text-blue-400">
+                <span className="text-sm font-medium tennis-text-secondary">Break Points Won</span>
+                <span className="text-lg font-bold" style={{ color: `rgb(var(--color-accent-primary))` }}>
                   {stats2.breakPointsWon}/{stats2.breakPointsWon + stats2.breakPointsMissed}
                 </span>
               </div>
-              <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+              <div className="h-3 rounded-full overflow-hidden theme-transition"
+                   style={{ backgroundColor: `rgb(var(--color-bg-secondary))` }}>
                 <motion.div
-                  className="h-full bg-gradient-to-r from-blue-500 to-blue-400"
+                  className="h-full"
+                  style={{ background: 'var(--gradient-primary)' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${(stats2.breakPointsWon / (stats2.breakPointsWon + stats2.breakPointsMissed)) * 100}%` }}
                   transition={{ duration: 1, delay: 0.4 }}
@@ -186,7 +216,7 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
             </div>
 
             <div className="pt-4">
-              <h4 className="text-sm font-semibold text-slate-400 mb-3">First Serve Accuracy</h4>
+              <h4 className="text-sm font-semibold tennis-text-secondary mb-3">First Serve Accuracy</h4>
               <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie
@@ -198,11 +228,18 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {serve2Data.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                    {serve2Data.map((_, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={index === 0 ? `rgb(var(--color-success))` : `rgb(var(--color-error))`} 
+                      />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={{ 
+                    backgroundColor: `rgb(var(--color-bg-secondary))`,
+                    borderColor: `rgb(var(--color-border))`,
+                    color: `rgb(var(--color-text-primary))`
+                  }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -210,19 +247,42 @@ export const PlayerAnalysis = ({ match }: PlayerAnalysisProps) => {
         </div>
       </div>
 
-      <div className="lg:col-span-2 p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-xl">
-        <h3 className="text-xl font-bold text-white mb-6">Head-to-Head Comparison</h3>
+      <div className="lg:col-span-2 tennis-card p-6 rounded-2xl shadow-xl theme-transition">
+        <h3 className="text-xl font-bold tennis-text-primary mb-6">Head-to-Head Comparison</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={compareData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-            <XAxis dataKey="stat" stroke="#94a3b8" />
-            <YAxis stroke="#94a3b8" />
-            <Tooltip
-              contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-              labelStyle={{ color: '#f1f5f9' }}
+            <CartesianGrid 
+              strokeDasharray="3 3" 
+              stroke={`rgb(var(--color-border))`} 
             />
-            <Bar dataKey="player1" fill="#10b981" radius={[8, 8, 0, 0]} name={player1.name} />
-            <Bar dataKey="player2" fill="#3b82f6" radius={[8, 8, 0, 0]} name={player2.name} />
+            <XAxis 
+              dataKey="stat" 
+              stroke={`rgb(var(--color-text-secondary))`}
+            />
+            <YAxis 
+              stroke={`rgb(var(--color-text-secondary))`}
+            />
+            <Tooltip
+              contentStyle={{ 
+                backgroundColor: `rgb(var(--color-bg-secondary))`,
+                borderColor: `rgb(var(--color-border))`,
+                color: `rgb(var(--color-text-primary))`,
+                borderRadius: '8px'
+              }}
+              labelStyle={{ color: `rgb(var(--color-text-primary))` }}
+            />
+            <Bar 
+              dataKey="player1" 
+              fill={`rgb(var(--color-accent-primary))`}
+              radius={[8, 8, 0, 0]} 
+              name={player1.name} 
+            />
+            <Bar 
+              dataKey="player2" 
+              fill={`rgb(var(--color-accent-secondary))`}
+              radius={[8, 8, 0, 0]} 
+              name={player2.name} 
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

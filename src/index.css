@@ -3,8 +3,50 @@
 @tailwind utilities;
 
 @layer base {
+  :root[data-theme="light"] {
+    /* Tennis court inspired colors */
+    --color-bg-primary: 236 240 243; /* Light blue-grey like hard court */
+    --color-bg-secondary: 244 246 248; /* Slightly lighter court lines */
+    --color-text-primary: 22 36 48; /* Deep navy for contrast */
+    --color-text-secondary: 75 85 99; /* Softer text for secondary info */
+    --color-accent-primary: 132 204 22; /* Tennis ball yellow-green */
+    --color-accent-secondary: 34 197 94; /* Court green */
+    --color-border: 203 213 225; /* Light court line color */
+    --color-card-bg: 255 255 255; /* White background for cards */
+    --color-success: 34 197 94; /* Green for positive stats */
+    --color-warning: 245 158 11; /* Orange for alerts */
+    --color-error: 239 68 68; /* Red for errors/negative stats */
+    --color-chart-bg: 248 250 252; /* Light background for charts */
+    --color-chart-grid: 226 232 240; /* Grid lines in charts */
+    --color-stats-bg: 243 244 246; /* Background for stat boxes */
+    --gradient-primary: linear-gradient(135deg, rgb(132 204 22), rgb(34 197 94));
+  }
+
+  :root[data-theme="dark"] {
+    /* Night match lighting inspired */
+    --color-bg-primary: 17 24 39; /* Dark court at night */
+    --color-bg-secondary: 31 41 55; /* Slightly lighter for depth */
+    --color-text-primary: 248 250 252; /* Bright white text */
+    --color-text-secondary: 156 163 175; /* Dimmed text */
+    --color-accent-primary: 132 204 22; /* Tennis ball yellow-green */
+    --color-accent-secondary: 34 197 94; /* Court green */
+    --color-border: 55 65 81; /* Darker separators */
+    --color-card-bg: 24 31 45; /* Darker cards */
+    --color-success: 34 197 94; /* Green for positive stats */
+    --color-warning: 245 158 11; /* Orange for alerts */
+    --color-error: 239 68 68; /* Red for errors/negative stats */
+    --color-chart-bg: 17 24 39; /* Dark background for charts */
+    --color-chart-grid: 55 65 81; /* Grid lines in charts */
+    --color-stats-bg: 31 41 55; /* Background for stat boxes */
+    --gradient-primary: linear-gradient(135deg, rgb(132 204 22), rgb(34 197 94));
+  }
+
   body {
-    @apply bg-slate-950 text-slate-100;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    background-color: rgb(var(--color-bg-primary));
+    color: rgb(var(--color-text-primary));
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
