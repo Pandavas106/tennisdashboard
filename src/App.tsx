@@ -99,7 +99,10 @@ function AppContent() {
               transition={{ delay: 0.1 }}
               className="xl:col-span-3"
             >
-              <LiveMatchView match={match} />
+              {(() => {
+                const LiveMatchViewAny = LiveMatchView as any;
+                return <LiveMatchViewAny match={match} />;
+              })()}
             </motion.div>
 
             <motion.div

@@ -1,11 +1,11 @@
-com\tennis\dashboard\controller\TennisApiController.class
 com\tennis\dashboard\config\TennisApiConfig.class
 com\tennis\dashboard\service\TennisStatsService.class
-com\tennis\dashboard\config\SecurityConfig.class
 com\tennis\dashboard\model\TennisStats$StatsDetails.class
 com\tennis\dashboard\controller\TennisStatsController.class
-com\tennis\dashboard\config\GlobalExceptionHandler.class
 com\tennis\dashboard\service\TennisApiService.class
 com\tennis\dashboard\model\TennisStats.class
 com\tennis\dashboard\model\WTARanking.class
+com\tennis\dashboard\controller\TennisApiController.class
+com\tennis\dashboard\config\SecurityConfig.class
+com\tennis\dashboard\config\GlobalExceptionHandler.class
 com\tennis\dashboard\TennisDashboardApplication.class

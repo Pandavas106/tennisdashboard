@@ -36,6 +36,15 @@ export interface Match {
   id: string;
   player1: Player;
   player2: Player;
+  player1Score: MatchScore;
+  player2Score: MatchScore;
+  server: 1 | 2;
+  tournament: string;
+  round: string;
+  date: string;
+  id: string;
+  player1: Player;
+  player2: Player;
   score1: MatchScore;
   score2: MatchScore;
   stats1: PlayerStats;
