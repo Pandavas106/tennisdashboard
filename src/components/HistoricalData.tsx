@@ -22,6 +22,9 @@ export const HistoricalData = () => {
 
   return (
     <div className="p-6 rounded-2xl bg-card-bg border border-color-border shadow-xl">
+      <div className="mb-4 p-3 rounded bg-yellow-100 text-yellow-800 text-sm">
+        Real-time data is not available for historical matches. Displaying static/mock data.
+      </div>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
           <h3 className="text-2xl font-bold text-text-primary mb-1">Historical Matches</h3>
@@ -53,7 +56,7 @@ export const HistoricalData = () => {
       <div className="space-y-4">
         {filteredMatches.map((match, index) => (
           <motion.div
-            key={index}
+            key={match.tournament + match.date + index}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}

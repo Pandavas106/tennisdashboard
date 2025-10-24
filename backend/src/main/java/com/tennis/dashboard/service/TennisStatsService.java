@@ -1,7 +1,6 @@
 package com.tennis.dashboard.service;
 
 import com.tennis.dashboard.model.TennisStats;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

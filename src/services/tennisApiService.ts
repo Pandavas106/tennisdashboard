@@ -13,7 +13,7 @@ export const getTennisData = async () => {
   try {
     const [rankingsResponse, matchesResponse] = await Promise.all([
       api.get('/tennis/rankings/wta'),
-      api.get('/tennis/matches/live')
+      axios.get('http://localhost:8080/api/tennis/matches/live')
     ]);
 
     return {

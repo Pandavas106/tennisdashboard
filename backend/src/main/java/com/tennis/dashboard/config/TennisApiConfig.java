@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.support.WebClientAdapter;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class TennisApiConfig {
@@ -16,10 +14,13 @@ public class TennisApiConfig {
     @Value("${tennis.api.host}")
     private String apiHost;
 
+    @Value("${tennis.api.base-url}")
+    private String baseUrl;
+
     @Bean
-    public WebClient tennisApiClient() {
+    WebClient tennisApiClient() {
         return WebClient.builder()
-                .baseUrl("https://tennisapi1.p.rapidapi.com")
+                .baseUrl(baseUrl)
                 .defaultHeader("X-RapidAPI-Key", apiKey)
                 .defaultHeader("X-RapidAPI-Host", apiHost)
                 .build();

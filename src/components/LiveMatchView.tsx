@@ -1,9 +1,11 @@
-import { Clock, Radio } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+
+import { useState, useCallback, useEffect } from 'react';
+import { usePolling } from '../hooks/usePolling';
 import { Match } from '../types/tennis';
 import { getTennisData } from '../services/tennisApiService';
 import { PlayerScoreCard } from './PlayerScoreCard';
+import { PlayerAnalysis } from './PlayerAnalysis';
+import { EventTicker } from './EventTicker';
 import '../styles/components.css';
 
 interface TennisData {
@@ -11,32 +13,30 @@ interface TennisData {
   rankings: any[];
 }
 
-interface LiveMatchViewProps {
-  match: Match;
-}
 
 export const LiveMatchView = () => {
   const [currentMatch, setCurrentMatch] = useState<Match | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchMatchData = async () => {
-      try {
-        const data = (await getTennisData()) as TennisData;
-        if (data.matches?.[0]) {
-          setCurrentMatch(data.matches[0]);
-        }
-      } catch (error) {
-        console.error('Error fetching match data:', error);
-      } finally {
-        setLoading(false);
+  const fetchMatchData = useCallback(async () => {
+    try {
+      const data = (await getTennisData()) as TennisData;
+      if (data.matches?.[0]) {
+        setCurrentMatch(data.matches[0]);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching match data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
+  // Poll every 5 seconds for real-time updates
+  usePolling(fetchMatchData, 5000);
+
+  // Initial load
+  useEffect(() => {
     fetchMatchData();
-    const interval = setInterval(fetchMatchData, 30000); // Refresh every 30 seconds
-
-    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
@@ -74,6 +74,10 @@ export const LiveMatchView = () => {
               <span>{currentMatch.round}</span>
             </div>
           </div>
+          {/* Real-time Player Analysis */}
+          <PlayerAnalysis match={currentMatch} />
+          {/* Real-time Event Ticker */}
+          <EventTicker events={currentMatch.events || []} />
         </div>
       ) : (
         <div className="text-center py-8 text-text-secondary">

@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
                 // Public API endpoints
                 .requestMatchers("/api/players/**").permitAll()
+                .requestMatchers("/api/tennis/**").permitAll()
                 // Secure other endpoints
                 .anyRequest().authenticated()
             )

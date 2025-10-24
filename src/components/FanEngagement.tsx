@@ -3,6 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart3, Users, Trophy, CheckCircle, TrendingUp } from 'lucide-react';
 import { getPredictionPolls, getLeaderboard } from '../services/matchService';
 
+// Fallback UI for real-time data
+const RealTimeUnavailable = () => (
+  <div className="mb-4 p-3 rounded bg-yellow-100 text-yellow-800 text-sm">
+    Real-time data is not available for fan engagement. Displaying static/mock data.
+  </div>
+);
+
 export const FanEngagement = () => {
   const [polls] = useState(getPredictionPolls());
   const [leaderboard] = useState(getLeaderboard());
@@ -19,6 +26,7 @@ export const FanEngagement = () => {
 
   return (
     <div className="space-y-6">
+      <RealTimeUnavailable />
       <AnimatePresence>
         {showConfetti && (
           <motion.div
@@ -27,27 +35,30 @@ export const FanEngagement = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 pointer-events-none z-50"
           >
-            {[...Array(50)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full"
-                initial={{
-                  x: '50vw',
-                  y: '50vh',
-                  scale: 0
-                }}
-                animate={{
-                  x: Math.random() * window.innerWidth,
-                  y: Math.random() * window.innerHeight,
-                  scale: [0, 1, 0],
-                  rotate: Math.random() * 360
-                }}
-                transition={{
-                  duration: 1.5,
-                  delay: Math.random() * 0.5
-                }}
-              />
-            ))}
+            {Array.from({ length: 50 }).map(() => {
+              const confettiKey = `confetti-${Math.random().toString(36).substring(2, 11)}`;
+              return (
+                <motion.div
+                  key={confettiKey}
+                  className="absolute w-2 h-2 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full"
+                  initial={{
+                    x: '50vw',
+                    y: '50vh',
+                    scale: 0
+                  }}
+                  animate={{
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    scale: [0, 1, 0],
+                    rotate: Math.random() * 360
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    delay: Math.random() * 0.5
+                  }}
+                />
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>
@@ -79,11 +90,11 @@ export const FanEngagement = () => {
                     const percentage = poll.totalVotes > 0 ? (poll.votes[index] / poll.totalVotes) * 100 : 0;
                     return (
                       <motion.button
-                        key={index}
+                        key={option}
                         onClick={() => handleVote(poll.id)}
                         disabled={hasVoted}
-                        whileHover={!hasVoted ? { scale: 1.02 } : {}}
-                        whileTap={!hasVoted ? { scale: 0.98 } : {}}
+                        whileHover={hasVoted ? {} : { scale: 1.02 }}
+                        whileTap={hasVoted ? {} : { scale: 0.98 }}
                         className={`w-full p-4 rounded-lg text-left transition-all relative overflow-hidden ${
                           hasVoted
                             ? 'cursor-default'
@@ -142,35 +153,44 @@ export const FanEngagement = () => {
         </div>
 
         <div className="space-y-3">
-          {leaderboard.map((entry, index) => (
-            <motion.div
-              key={entry.rank}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.02, x: 5 }}
-              className={`p-4 rounded-xl backdrop-blur-sm border transition-all ${
-                entry.rank === 1
-                  ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border-yellow-500/50 shadow-lg shadow-yellow-500/20'
-                  : entry.rank === 2
-                  ? 'bg-gradient-to-r from-slate-400/20 to-slate-500/20 border-slate-400/50'
-                  : entry.rank === 3
-                  ? 'bg-gradient-to-r from-orange-500/20 to-orange-600/20 border-orange-500/50'
-                  : 'bg-bg-secondary/50 border-color-border hover:border-accent-primary/50'
-              }`}
-            >
+          {leaderboard.map((entry, index) => {
+            let entryBgClass = '';
+            if (entry.rank === 1) {
+              entryBgClass = 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border-yellow-500/50 shadow-lg shadow-yellow-500/20';
+            } else if (entry.rank === 2) {
+              entryBgClass = 'bg-gradient-to-r from-slate-400/20 to-slate-500/20 border-slate-400/50';
+            } else if (entry.rank === 3) {
+              entryBgClass = 'bg-gradient-to-r from-orange-500/20 to-orange-600/20 border-orange-500/50';
+            } else {
+              entryBgClass = 'bg-bg-secondary/50 border-color-border hover:border-accent-primary/50';
+            }
+            return (
+              <motion.div
+                key={entry.rank}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02, x: 5 }}
+                className={`p-4 rounded-xl backdrop-blur-sm border transition-all ${entryBgClass}`}
+              >
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl ${
-                  entry.rank === 1
-                    ? 'bg-gradient-to-br from-accent-primary to-accent-secondary text-text-primary shadow-lg'
-                    : entry.rank === 2
-                    ? 'bg-gradient-to-br from-bg-secondary to-text-secondary text-text-primary'
-                    : entry.rank === 3
-                    ? 'bg-gradient-to-br from-warning to-error text-text-primary'
-                    : 'bg-bg-secondary text-text-secondary'
-                }`}>
-                  {entry.rank}
-                </div>
+                {(() => {
+                  let rankClass = '';
+                  if (entry.rank === 1) {
+                    rankClass = 'bg-gradient-to-br from-accent-primary to-accent-secondary text-text-primary shadow-lg';
+                  } else if (entry.rank === 2) {
+                    rankClass = 'bg-gradient-to-br from-bg-secondary to-text-secondary text-text-primary';
+                  } else if (entry.rank === 3) {
+                    rankClass = 'bg-gradient-to-br from-warning to-error text-text-primary';
+                  } else {
+                    rankClass = 'bg-bg-secondary text-text-secondary';
+                  }
+                  return (
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl ${rankClass}`}>
+                      {entry.rank}
+                    </div>
+                  );
+                })()}
 
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -194,7 +214,8 @@ export const FanEngagement = () => {
                 </div>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         <motion.div
